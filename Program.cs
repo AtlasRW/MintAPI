@@ -2,7 +2,22 @@ using dotenv.net;
 
 DotEnv.Load();
 
+var CORS = "_CrossOriginResourceSharing";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: CORS,
+        builder =>
+        {
+            builder.WithOrigins(
+                "http://localhost:4200"
+            );
+        }
+    );
+});
 
 // Add services to the container.
 
@@ -22,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(CORS);
 
 app.UseAuthorization();
 
