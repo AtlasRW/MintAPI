@@ -1,5 +1,6 @@
 using Mint.API.DTOs;
 using Mint.API.Models;
+using Mint.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mint.API.Controllers;
@@ -16,7 +17,7 @@ public class IconsController : ControllerBase
 
         try
         {
-            vIcons = Icon.GetAll();
+            vIcons = IconService.GetAll();
             Response.StatusCode = 200;
         }
         catch
@@ -34,7 +35,7 @@ public class IconsController : ControllerBase
 
         try
         {
-            vIcon = Icon.Insert(
+            vIcon = IconService.Insert(
                 Convert.FromBase64String(pIcon.Data),
                 out bool vResult
             );

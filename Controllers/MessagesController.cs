@@ -1,5 +1,6 @@
 using Mint.API.DTOs;
 using Mint.API.Models;
+using Mint.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mint.API.Controllers;
@@ -16,7 +17,7 @@ public class MessagesController : ControllerBase
 
         try
         {
-            vCurrentMessages = Message.GetAllCurrent();
+            vCurrentMessages = MessageService.GetAllCurrent();
             Response.StatusCode = 200;
         }
         catch
@@ -34,8 +35,8 @@ public class MessagesController : ControllerBase
 
         try
         {
-            vMessages = Message.GetAll(
-                pMessageFilters.Categories,
+            vMessages = MessageService.GetAll(
+                pMessageFilters.Categories ?? new List<int>(),
                 pMessageFilters.IsCurrent,
                 pMessageFilters.IsDraft
             );
@@ -56,7 +57,7 @@ public class MessagesController : ControllerBase
 
         try
         {
-            vMessage = Message.UpdateOrInsert(
+            vMessage = MessageService.UpdateOrInsert(
                 pMessage.Id,
                 pMessage.Title,
                 pMessage.IsDraft,
@@ -87,7 +88,7 @@ public class MessagesController : ControllerBase
 
         try
         {
-            vMessage = Message.GetById(pMessageId);
+            vMessage = MessageService.GetById(pMessageId);
             Response.StatusCode = (vMessage == null) ? 500 : 200;
         }
         catch

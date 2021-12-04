@@ -1,10 +1,10 @@
 namespace Mint.API.DTOs
 {
-    public interface ActionDTO
+    public class ActionDTO
 	{
         
-		string Title { get; set; }
-		string Link { get; set; }
+		public string Title { get; set; }
+		public string Link { get; set; }
 
 	}
 }

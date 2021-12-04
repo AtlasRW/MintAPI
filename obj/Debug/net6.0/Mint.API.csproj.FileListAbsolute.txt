@@ -249,3 +249,4 @@
 /root/Mint.Api/obj/Debug/net6.0/ref/Mint.API.dll
 /root/Mint.Api/obj/Debug/net6.0/Mint.API.pdb
 /root/Mint.Api/obj/Debug/net6.0/Mint.API.genruntimeconfig.cache
+/root/Mint.Api/bin/Debug/net6.0/dotenv.net.dll

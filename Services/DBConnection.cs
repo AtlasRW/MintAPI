@@ -7,10 +7,11 @@ namespace Mint.API.Services
     {
 
         private static readonly string DNS =
-            "Data Source=172.17.0.1,10000;"
-            + "Initial Catalog=MINT_DASHBOARD_BUILDER;"
-            + "User Id=sa;"
-            + "Password=ieu28.dSZ;";
+            $"Data Source={Environment.GetEnvironmentVariable("SERVER")};"
+            + $"Initial Catalog={Environment.GetEnvironmentVariable("DATABASE")};"
+            + $"User Id={Environment.GetEnvironmentVariable("USER")};"
+            + $"Password={Environment.GetEnvironmentVariable("PASSWORD")};";
+
         private List<SqlParameter> Parameters = new List<SqlParameter>();
         private SqlConnection Connection = new SqlConnection(DNS);
         public DBConnection() => Connection.Open();

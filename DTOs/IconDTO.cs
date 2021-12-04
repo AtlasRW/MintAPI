@@ -1,9 +1,9 @@
 namespace Mint.API.DTOs
 {
-    public interface IconDTO
+    public class IconDTO
 	{
 
-		string Data { get; set; }
+		public string Data { get; set; }
 
 	}
 }

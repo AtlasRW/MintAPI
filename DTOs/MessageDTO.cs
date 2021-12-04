@@ -1,19 +1,19 @@
 namespace Mint.API.DTOs
 {
-    public interface MessageDTO
+    public class MessageDTO
 	{
 
-		int? Id { get; set; }
-		string Title { get; set; }
-		bool IsDraft { get; set; }
-		string? Header { get; set; }
-		string? Body { get; set; }
-		string? Background { get; set; }
-		DateTime? StartDate { get; set; }
-		DateTime? EndDate { get; set; }
-		int? Icon { get; set; }
-		int? Action { get; set; }
-		List<int> Categories { get; set; }
+		public int? Id { get; set; }
+		public string Title { get; set; }
+		public bool IsDraft { get; set; }
+		public string? Header { get; set; }
+		public string? Body { get; set; }
+		public string? Background { get; set; }
+		public DateTime? StartDate { get; set; }
+		public DateTime? EndDate { get; set; }
+		public int? Icon { get; set; }
+		public int? Action { get; set; }
+		public List<int> Categories { get; set; }
 
 	}
 }

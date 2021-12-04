@@ -1,5 +1,6 @@
 using Mint.API.DTOs;
 using Mint.API.Models;
+using Mint.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mint.API.Controllers;
@@ -16,7 +17,7 @@ public class CategoriesController : ControllerBase
 
         try
         {
-            vCategories = Category.GetAll();
+            vCategories = CategoryService.GetAll();
             Response.StatusCode = 200;
         }
         catch
@@ -34,7 +35,7 @@ public class CategoriesController : ControllerBase
 
         try
         {
-            vCategory = Category.Insert(
+            vCategory = CategoryService.Insert(
                 pCategory.Title,
                 out bool vResult
             );

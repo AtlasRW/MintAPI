@@ -112,10 +112,14 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 			FOR XML PATH('')
         ), 1, 1, '') AS [MESSAGE_categories]
 	FROM [MESSAGE]
+	LEFT JOIN [MESSAGE_CATEGORY]
+	ON [MESSAGE_CATEGORY].[message_id] = [MESSAGE].[id]
+	LEFT JOIN [CATEGORY]
+	ON [MESSAGE_CATEGORY].[category_id] = [CATEGORY].[id]
 	WHERE
 	(
 		NOT EXISTS(SELECT 1 FROM @pCategories)
-		OR ([CATEGORY].[id] IN (SELECT [MESSAGE_category_id] FROM @pCategories))
+		OR ([CATEGORY].[id] IN (SELECT [ID] FROM @pCategories))
 	)
 	AND
 	(
@@ -372,7 +376,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 	WHERE [message_id] = @pMessageID;
 
 	INSERT INTO [MESSAGE_CATEGORY] ([message_id], [category_id])
-	SELECT @pMessageID, [category_id] FROM @pMessageCategories;
+	SELECT @pMessageID, [ID] FROM @pMessageCategories;
 
 	SELECT
 		[MESSAGE].[id] AS [MESSAGE_id],

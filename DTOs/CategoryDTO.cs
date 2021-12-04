@@ -1,9 +1,9 @@
 namespace Mint.API.DTOs
 {
-    public interface CategoryDTO
+    public class CategoryDTO
 	{
 		
-		string Title { get; set; }
+		public string Title { get; set; }
 
 	}
 }

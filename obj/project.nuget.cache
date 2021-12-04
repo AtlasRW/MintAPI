@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "vy8LwNQCo+UEHn9D9SdyQnpr5iuGRlbCr1YnMpMGAAlRr2z9nTeyNcSUAAy7aODd4Ze1+mDpM9MtBhZX2KyDjA==",
+  "dgSpecHash": "7R+p1wdvartzy1d4u2GQ/YknC48eZXiGTtNGmYuKDAuV1vfZXnvUCIwmaaMzc2j3Qbr0tBZUkhLo6RtWLCv3yw==",
   "success": true,
   "projectFilePath": "/root/Mint.Api/Mint.API.csproj",
   "expectedPackageFiles": [
+    "/root/.nuget/packages/dotenv.net/3.1.1/dotenv.net.3.1.1.nupkg.sha512",
     "/root/.nuget/packages/humanizer.core/2.2.0/humanizer.core.2.2.0.nupkg.sha512",
     "/root/.nuget/packages/messagepack/2.1.152/messagepack.2.1.152.nupkg.sha512",
     "/root/.nuget/packages/messagepack.annotations/2.1.152/messagepack.annotations.2.1.152.nupkg.sha512",

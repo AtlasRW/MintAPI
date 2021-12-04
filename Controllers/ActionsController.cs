@@ -1,4 +1,5 @@
 using Mint.API.DTOs;
+using Mint.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Action = Mint.API.Models.Action;
 
@@ -16,7 +17,7 @@ public class ActionsController : ControllerBase
 
         try
         {
-            vActions = Action.GetAll();
+            vActions = ActionService.GetAll();
             Response.StatusCode = 200;
         }
         catch
@@ -34,7 +35,7 @@ public class ActionsController : ControllerBase
 
         try
         {
-            vAction = Action.Insert(
+            vAction = ActionService.Insert(
                 pAction.Title,
                 pAction.Link,
                 out bool vResult
