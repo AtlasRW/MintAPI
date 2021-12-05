@@ -1,7 +1,6 @@
 using System.Data;
 using Mint.API.Models;
 using System.Reflection;
-using System.Data.SqlClient;
 
 namespace Mint.API.Services
 {
@@ -21,15 +20,7 @@ namespace Mint.API.Services
             {
                 vConnection = new DBConnection();
 
-                SqlDataReader vReader = vConnection.ExecuteProcedure("[MESSAGE_getAllCurrent]");
-                Message vMessage = new Message();
-                while (vMessage.Read(vReader))
-                {
-                    vMessages.Add(vMessage);
-                    vMessage = new Message();
-                }
-
-                vReader.Close();
+                vMessages = vConnection.ExecuteProcedure<Message>("[MESSAGE_getAllCurrent]");
             }
             catch (Exception pException)
             {
@@ -73,15 +64,7 @@ namespace Mint.API.Services
                     vCategoriesTable.Rows.Add(vCategory);
                 vConnection.AddParameter("@pCategories", "[ID_list]", vCategoriesTable);
 
-                SqlDataReader vReader = vConnection.ExecuteProcedure("[MESSAGE_getAll]");
-                Message vMessage = new Message();
-                while (vMessage.Read(vReader))
-                {
-                    vMessages.Add(vMessage);
-                    vMessage = new Message();
-                }
-
-                vReader.Close();
+                vMessages = vConnection.ExecuteProcedure<Message>("[MESSAGE_getAll]");
             }
             catch (Exception pException)
             {
@@ -110,12 +93,7 @@ namespace Mint.API.Services
                 vConnection = new DBConnection();
                 vConnection.AddParameter("@pMessageID", SqlDbType.Int, pMessageID);
 
-                SqlDataReader vReader = vConnection.ExecuteProcedure("[MESSAGE_getById]");
-                vMessage = new Message();
-                if (!vMessage.Read(vReader))
-                    vMessage = null;
-
-                vReader.Close();
+                vMessage = vConnection.ExecuteProcedure<Message>("[MESSAGE_getById]")[0];
             }
             catch (Exception pException)
             {
@@ -183,13 +161,8 @@ namespace Mint.API.Services
                     vCategoriesTable.Rows.Add(vMessageCategory);
                 vConnection.AddParameter("@pMessageCategories", "[ID_list]", vCategoriesTable);
 
-                SqlDataReader vReader = vConnection.ExecuteProcedure("[MESSAGE_updateOrInsert]", out int vReturn);
+                vMessage = vConnection.ExecuteProcedure<Message>("[MESSAGE_updateOrInsert]", out int vReturn)[0];
                 pResult = vReturn < 0 ? false : true;
-                vMessage = new Message();
-                if (!vMessage.Read(vReader))
-                    vMessage = null;
-
-                vReader.Close();
             }
             catch (Exception pException)
             {

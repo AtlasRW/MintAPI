@@ -1,4 +1,5 @@
 using System.Data;
+using Mint.API.Interfaces;
 using System.Data.SqlClient;
 
 namespace Mint.API.Services
@@ -48,7 +49,7 @@ namespace Mint.API.Services
             );
         }
 
-        public SqlDataReader ExecuteQuery(string pQueryText)
+        public List<T> ExecuteQuery<T>(string pQueryText) where T : Model
         {
             SqlCommand vCommand = new SqlCommand(pQueryText, Connection)
             {
@@ -60,9 +61,21 @@ namespace Mint.API.Services
                 vCommand.Parameters.Add(vParameter);
             }
 
-            return vCommand.ExecuteReader();
+            SqlDataReader vReader = vCommand.ExecuteReader();
+
+            List<T> vRows = new List<T>();
+            T vRow = Activator.CreateInstance<T>();
+            while (vRow.Read(vReader))
+            {
+                vRows.Add(vRow);
+                vRow = Activator.CreateInstance<T>();
+            };
+
+            vReader.Close();
+
+            return vRows;
         }
-        public SqlDataReader ExecuteQuery(string pQueryText, out int pResult)
+        public List<T> ExecuteQuery<T>(string pQueryText, out int pReturn) where T : Model
         {
             SqlCommand vCommand = new SqlCommand(pQueryText, Connection)
             {
@@ -83,12 +96,22 @@ namespace Mint.API.Services
             );
 
             SqlDataReader vReader = vCommand.ExecuteReader();
-            pResult = (int) vCommand.Parameters["ReturnValue"].Value;
 
-            return vReader;
+            List<T> vRows = new List<T>();
+            T vRow = Activator.CreateInstance<T>();
+            while (vRow.Read(vReader))
+            {
+                vRows.Add(vRow);
+                vRow = Activator.CreateInstance<T>();
+            };
+
+            vReader.Close();
+            pReturn = (int) vCommand.Parameters["ReturnValue"].Value;
+
+            return vRows;
         }
 
-        public SqlDataReader ExecuteProcedure(string pProcedureName)
+        public List<T> ExecuteProcedure<T>(string pProcedureName) where T : Model
         {
             SqlCommand vCommand = new SqlCommand(pProcedureName, Connection)
             {
@@ -100,9 +123,22 @@ namespace Mint.API.Services
                 vCommand.Parameters.Add(vParameter);
             }
 
-            return vCommand.ExecuteReader();
+            SqlDataReader vReader = vCommand.ExecuteReader();
+
+            List<T> vRows = new List<T>();
+            T vRow = Activator.CreateInstance<T>();
+            while (vRow.Read(vReader))
+            {
+                vRows.Add(vRow);
+                vRow = Activator.CreateInstance<T>();
+            };
+
+            vReader.Close();
+
+            return vRows;
         }
-        public SqlDataReader ExecuteProcedure(string pProcedureName, out int pResult)
+
+        public List<T> ExecuteProcedure<T>(string pProcedureName, out int pReturn) where T : Model
         {
             SqlCommand vCommand = new SqlCommand(pProcedureName, Connection)
             {
@@ -123,9 +159,19 @@ namespace Mint.API.Services
             );
 
             SqlDataReader vReader = vCommand.ExecuteReader();
-            pResult = (int) vCommand.Parameters["ReturnValue"].Value;
 
-            return vReader;
+            List<T> vRows = new List<T>();
+            T vRow = Activator.CreateInstance<T>();
+            while (vRow.Read(vReader))
+            {
+                vRows.Add(vRow);
+                vRow = Activator.CreateInstance<T>();
+            };
+
+            vReader.Close();
+            pReturn = (int) vCommand.Parameters["ReturnValue"].Value;
+
+            return vRows;
         }
         
         public void Close()

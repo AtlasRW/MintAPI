@@ -1,7 +1,6 @@
 using System.Data;
 using Mint.API.Models;
 using System.Reflection;
-using System.Data.SqlClient;
 
 namespace Mint.API.Services
 {
@@ -14,22 +13,14 @@ namespace Mint.API.Services
 		/// <returns>Liste de Catégories</returns>
 		public static List<Category> GetAll()
 		{
-			List<Category> vResults = new List<Category>();
+			List<Category> vCategories = new List<Category>();
 			DBConnection? vConnection = null;
 
 			try
 			{
 				vConnection = new DBConnection();
-
-				SqlDataReader vReader = vConnection.ExecuteProcedure("[CATEGORY_getAll]");
-				Category vCategory = new Category();
-				while (vCategory.Read(vReader))
-				{
-					vResults.Add(vCategory);
-					vCategory = new Category();
-				}
-
-				vReader.Close();
+				
+				vCategories = vConnection.ExecuteProcedure<Category>("[CATEGORY_getAll]");
 			}
 			catch (Exception pException)
 			{
@@ -40,7 +31,7 @@ namespace Mint.API.Services
 				if (vConnection != null) vConnection.Close();
 			}
 
-			return vResults;
+			return vCategories;
 		}
 
 		/// <summary>
@@ -62,13 +53,8 @@ namespace Mint.API.Services
 				vConnection = new DBConnection();
 				vConnection.AddParameter("@pCategoryTitle", SqlDbType.NVarChar, 50, pCategoryTitle);
 
-				SqlDataReader vReader = vConnection.ExecuteProcedure("[CATEGORY_insert]", out int vReturn);
+				vCategory = vConnection.ExecuteProcedure<Category>("[CATEGORY_insert]", out int vReturn)[0];
 				pResult = vReturn < 0 ? false : true;
-				vCategory = new Category();
-				if (!vCategory.Read(vReader))
-					vCategory = null;
-
-				vReader.Close();
 			}
 			catch (Exception pException)
 			{

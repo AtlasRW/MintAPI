@@ -1,6 +1,5 @@
 using System.Data;
 using System.Reflection;
-using System.Data.SqlClient;
 using Action = Mint.API.Models.Action;
 
 namespace Mint.API.Services
@@ -14,22 +13,14 @@ namespace Mint.API.Services
 		/// <returns>Liste d'Actions</returns>
 		public static List<Action> GetAll()
 		{
-			List<Action> vResults = new List<Action>();
-			DBConnection? vQConnection = null;
+			List<Action> vActions = new List<Action>();
+			DBConnection? vConnection = null;
 
 			try
 			{
-				vQConnection = new DBConnection();
-
-				SqlDataReader vReader = vQConnection.ExecuteProcedure("[ACTION_getAll]");
-				Action vResult = new Action();
-				while (vResult.Read(vReader))
-				{
-					vResults.Add(vResult);
-					vResult = new Action();
-				}
-
-				vReader.Close();
+				vConnection = new DBConnection();
+				
+				vActions = vConnection.ExecuteProcedure<Action>("[ACTION_getAll]");
 			}
 			catch (Exception pException)
 			{
@@ -37,10 +28,10 @@ namespace Mint.API.Services
 			}
 			finally
 			{
-				if (vQConnection != null) vQConnection.Close();
+				if (vConnection != null) vConnection.Close();
 			}
 
-			return vResults;
+			return vActions;
 		}
 
 		/// <summary>
@@ -56,22 +47,17 @@ namespace Mint.API.Services
 			out bool pResult
 		)
 		{
-			Action? vResult = null;
-			DBConnection? vQConnection = null;
+			Action? vAction = null;
+			DBConnection? vConnection = null;
 
 			try
 			{
-				vQConnection = new DBConnection();
-				vQConnection.AddParameter("@pActionTitle", SqlDbType.NVarChar, 50, pActionTitle);
-				vQConnection.AddParameter("@pActionLink", SqlDbType.NVarChar, pActionLink);
+				vConnection = new DBConnection();
+				vConnection.AddParameter("@pActionTitle", SqlDbType.NVarChar, 50, pActionTitle);
+				vConnection.AddParameter("@pActionLink", SqlDbType.NVarChar, pActionLink);
 
-				SqlDataReader vReader = vQConnection.ExecuteProcedure("[ACTION_insert]", out int vReturn);
+				vAction = vConnection.ExecuteProcedure<Action>("[ACTION_insert]", out int vReturn)[0];
 				pResult = vReturn < 0 ? false : true;
-				vResult = new Action();
-				if (!vResult.Read(vReader))
-					vResult = null;
-
-				vReader.Close();
 			}
 			catch (Exception pException)
 			{
@@ -80,10 +66,10 @@ namespace Mint.API.Services
 			}
 			finally
 			{
-				if (vQConnection != null) vQConnection.Close();
+				if (vConnection != null) vConnection.Close();
 			}
 
-			return vResult;
+			return vAction;
 		}
 
 		private static void MethodError(string? pMethodName, Exception pException)

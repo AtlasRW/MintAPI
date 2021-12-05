@@ -1,7 +1,6 @@
 using System.Data;
 using Mint.API.Models;
 using System.Reflection;
-using System.Data.SqlClient;
 
 namespace Mint.API.Services
 {
@@ -20,16 +19,8 @@ namespace Mint.API.Services
 			try
 			{
 				vConnection = new DBConnection();
-
-				SqlDataReader vReader = vConnection.ExecuteProcedure("[ICON_getAll]");
-				Icon vIcon = new Icon();
-				while (vIcon.Read(vReader))
-				{
-					vIcons.Add(vIcon);
-					vIcon = new Icon();
-				}
-
-				vReader.Close();
+				
+				vIcons = vConnection.ExecuteProcedure<Icon>("[ICON_getAll]");
 			}
 			catch (Exception pException)
 			{
@@ -62,13 +53,8 @@ namespace Mint.API.Services
 				vConnection = new DBConnection();
 				vConnection.AddParameter("@pIconData", SqlDbType.Image, pIconData);
 
-				SqlDataReader vReader = vConnection.ExecuteProcedure("[ICON_insert]", out int vReturn);
+				vIcon = vConnection.ExecuteProcedure<Icon>("[ICON_insert]", out int vReturn)[0];
 				pResult = vReturn < 0 ? false : true;
-				vIcon = new Icon();
-				if (!vIcon.Read(vReader))
-					vIcon = null;
-
-				vReader.Close();
 			}
 			catch (Exception pException)
 			{
