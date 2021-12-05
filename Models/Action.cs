@@ -1,9 +1,10 @@
 using System.Data;
+using Mint.API.Interfaces;
 using System.Data.SqlClient;
 
 namespace Mint.API.Models
 {
-    public class Action
+    public class Action : Model
 	{
 
 		public int Id { get; set; }
