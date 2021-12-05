@@ -12,9 +12,10 @@ builder.Services.AddCors(options =>
         name: CORS,
         builder =>
         {
-            builder.WithOrigins(
-                "http://localhost:4200"
-            );
+            builder
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowAnyHeader();
         }
     );
 });
