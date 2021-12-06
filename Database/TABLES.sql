@@ -1,12 +1,12 @@
 /*'	=====================================================================
 =========================================================================
 
-	<DASHBOARD_MESSAGE>
+	<MINT_DASHBOARD_BUILDER>
 
 	====================
 	DESCRIPTION
 
-	Script de création des tables du projet DASHBOARD_MESSAGE
+	Script de création des tables du projet
 	====================
 
 	====================

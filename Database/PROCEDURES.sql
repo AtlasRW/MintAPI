@@ -1,16 +1,17 @@
 /*'	=====================================================================
 =========================================================================
 
-	<DASHBOARD_MESSAGE>
+	<MINT_DASHBOARD_BUILDER>
 
 	====================
 	DESCRIPTION
 
-	Script de création des procédures stockées du projet DASHBOARD_MESSAGE
+	Création des procédures stockées du projet
 	====================
 
 	====================
 	LISTE DES ELEMENTS DU FICHIER
+
 	TYPE	[ID_list]
 	PS		[MESSAGE_getAll]
 	PS		[MESSAGE_getAllCurrent]
