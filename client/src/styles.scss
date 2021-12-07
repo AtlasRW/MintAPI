@@ -1,0 +1,20 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/utilities';
+@import 'tailwindcss/components';
+@import "~@fontsource/roboto/300.css";
+@import "~@fontsource/roboto/400.css";
+@import "~@fontsource/roboto/500.css";
+@import "~@fontsource/material-icons/base.css";
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spinner .8s linear infinite;
+}

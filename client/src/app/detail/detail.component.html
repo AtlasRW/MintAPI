@@ -1,0 +1,25 @@
+<button
+  routerLink="/"
+  class="z-50 fixed top-5 left-5 py-2 px-5 bg-purple-500 text-white shadow-2xl cursor-pointer rounded-lg"
+>
+  MENU
+</button>
+
+<main class="w-screen h-screen z-10" *ngIf="message; else Loading">
+  <app-preview
+    [message]="message"
+    class="h-screen w-8/12 fixed left-0"
+  ></app-preview>
+  <app-form
+    [message]="message"
+    (messageUpdate)="onMessageUpdate()"
+    (messageCancel)="onMessageCancel()"
+    class="h-screen fixed right-0 w-4/12 shadow-2xl"
+  ></app-form>
+</main>
+
+<ng-template #Loading>
+  <main class="w-screen h-screen z-10 flex justify-center items-center">
+    <mat-spinner></mat-spinner>
+  </main>
+</ng-template>

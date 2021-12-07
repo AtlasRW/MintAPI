@@ -1,0 +1,213 @@
+<form #form="ngForm" class="h-full w-full overflow-y-scroll flex flex-col p-10 bg-purple-200">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Titre <span *ngIf="message.title">( {{ message.title.length }} /30 )</span></mat-label>
+    <input matInput type="text" name="title" #messagetitle="ngModel" maxlength="30" [(ngModel)]="message.title" required>
+    <mat-error *ngIf="messagetitle.errors?.maxlength">Limite de 30 caractères atteinte</mat-error>
+    <mat-error *ngIf="!message.title">Ce champs est requis</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Catégories</mat-label>
+    <mat-select name="categories" [(ngModel)]="message.categories" multiple>
+
+      <mat-select-trigger *ngIf="message.categories.length > 0">
+        <span
+          *ngFor="let category of message.categories"
+          class="bg-purple-50 rounded-lg p-1 m-1"
+        >
+          {{ category.title }}
+        </span>
+      </mat-select-trigger>
+
+      <mat-option
+        *ngFor="let category of service.categories"
+        [value]="category"
+      >
+        {{ category.title }}
+      </mat-option>
+
+    </mat-select>
+  </mat-form-field>
+
+  <section class="flex justify-between cursor-pointer">
+    <mat-form-field appearance="outline" class="w-1/2" (click)="BackgroundColor.click()">
+      <mat-label>Couleur</mat-label>
+      <section class="w-full flex justify-center items-center">
+        <input #BackgroundColor
+          [(colorPicker)]="message.background"
+          [cpOutputFormat]="'hex'"
+          [cpAlphaChannel]="'disabled'"
+          [cpFallbackColor]="''"
+          [cpPosition]="'left'"
+          [cpPresetLabel]="'Palette de Couleurs'"
+          [cpPresetColors]="colors"
+          [ngStyle]="{ 'background-color': message.background || 'transparent' }"
+          class="h-0 w-0 p-2 mr-2 rounded-sm cursor-pointer"
+        >
+        <input matInput
+          disabled
+          type="text"
+          name="background"
+          class="uppercase cursor-pointer"
+          [(ngModel)]="message.background"
+        >
+        <mat-icon
+          *ngIf="message.background"
+          (click)="message.background = ''"
+          class="text-gray-500"
+        >close</mat-icon>
+      </section>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-1/2">
+      <mat-label>Icône</mat-label>
+      <mat-select name="icon" [(ngModel)]="message.icon">
+        <mat-select-trigger *ngIf="message.icon" class="flex justify-center items-center">
+          <img
+            [src]="message.icon.data"
+            width="20" height="20"
+          >
+        </mat-select-trigger>
+        <mat-option [value]="null">
+          <article class="flex justify-center">
+            Aucune
+          </article>
+        </mat-option>
+        <mat-option
+          *ngFor="let icon of service.icons"
+          [value]="icon"
+        >
+          <article class="flex justify-center">
+            <img [src]="icon.data" width="50" height="50">
+          </article>
+        </mat-option>
+
+        <section class="flex justify-evenly items-center bg-purple-50 p-2">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="IconInput.click()"
+          >
+            UPLOAD SVG
+          </button>
+          <input
+            hidden #IconInput
+            type="file" accept="image/svg+xml"
+            (change)="nextIcon($event)"
+          >
+        </section>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <mat-form-field appearance="outline">
+    <mat-label>En-Tête <span *ngIf="message.header">( {{ message.header.length }} /100 )</span></mat-label>
+    <textarea matInput name="header" #messageheader="ngModel" maxlength="100" rows="4" [(ngModel)]="message.header"></textarea>
+    <mat-error *ngIf="messageheader.errors?.maxlength">Limite de 100 caractères atteinte</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Corps <span *ngIf="message.body">( {{ message.body.length }} /200 )</span></mat-label>
+    <textarea matInput name="body" #messagebody="ngModel" maxlength="200" rows="7" [(ngModel)]="message.body"></textarea>
+    <mat-error *ngIf="messagebody.errors?.maxlength">Limite de 200 caractères atteinte</mat-error>
+  </mat-form-field>
+
+  <section class="flex justify-between">
+    <mat-form-field appearance="outline" class="w-1/2">
+      <mat-label>Date de début</mat-label>
+      <input matInput [matDatepicker]="startDatePicker" name="startDate" [(ngModel)]="message.startDate" required>
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+      <mat-error *ngIf="!message.startDate">Ce champs est requis</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-1/2">
+      <mat-label>Date de Fin</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" name="endDate" [(ngModel)]="message.endDate" required>
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="!message.endDate">Ce champs est requis</mat-error>
+    </mat-form-field>
+  </section>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Action</mat-label>
+    <mat-select name="action" [(ngModel)]="message.action">
+      <mat-select-trigger
+        *ngIf="message.action"
+        class="flex justify-center items-center"
+      >
+        {{ message.action.title }}
+      </mat-select-trigger>
+      <mat-option
+        [value]="null"
+      >
+        Aucune
+      </mat-option>
+      <mat-option
+        *ngFor="let action of service.actions"
+        [value]="action"
+      >
+        {{ action.title }} <i class="text-xs">{{ action.link }}</i>
+      </mat-option>
+
+      <section class="w-full flex justify-evenly items-center bg-purple-100 p-1">
+        <section class="p-2">
+          <input
+            matInput name="newActionTitle"
+            class="h-10 w-11/12 text-center outline-none rounded-lg"
+            type="text" placeholder="TITRE NOUVELLE ACTION"
+            [(ngModel)]="newAction.title"
+          >
+          <input
+            matInput name="newActionUrl"
+            class="h-10 w-11/12 text-center outline-none rounded-lg"
+            type="text" placeholder="URL NOUVELLE ACTION"
+            [(ngModel)]="newAction.link"
+          >
+        </section>
+        <button
+          matSuffix mat-icon-button
+          [class]="newAction.title && newAction.link ? 'bg-purple-500 text-white' : 'bg-gray-500'"
+          [disabled]="newAction.title && newAction.link ? false : true"
+          (click)="onNewAction()"
+        >
+          <mat-icon>done</mat-icon>
+        </button>
+      </section>
+
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="publishOrDraftMessage()"
+    [disabled]="!message.title || !message.startDate || !message.endDate || messagetitle.errors?.maxlength || messageheader.errors?.maxlength || messagebody.errors?.maxlength"
+  >
+    {{ message.isDraft ? 'PUBLIER LE MESSAGE' : 'METTRE EN BROUILLON' }}
+  </button>
+
+  <section class="flex justify-between my-3">
+    <button
+      mat-raised-button
+      color="primary"
+      class="w-1/2"
+      (click)="updateOrInsertMessage()"
+      [disabled]="!message.title || !message.startDate || !message.endDate || messagetitle.errors?.maxlength || messageheader.errors?.maxlength || messagebody.errors?.maxlength"
+    >
+      SAUVEGARDER
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      class="w-1/2"
+      (click)="cancelMessage()"
+    >
+      ANNULER
+    </button>
+  </section>
+
+</form>

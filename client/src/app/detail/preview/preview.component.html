@@ -1,0 +1,8 @@
+<section *ngIf="message" class="w-full h-full flex justify-center items-center">
+  <section class="device flex justify-center items-center bg-black shadow-2xl rounded-3xl border-2 border-black">
+    <section class="device-screen bg-white rounded-xl p-2">
+      <h1 class="text-center my-5">ESPACE CLIENT</h1>
+      <app-dashboard-message [message]="message"></app-dashboard-message>
+    </section>
+  </section>
+</section>

@@ -1,0 +1,23 @@
+<section
+  class="message-container"
+  [ngStyle]="{ 'background-color': message.background || '#FFF' }"
+>
+  <p
+    *ngIf="message.header"
+    class="message-text message-header"
+  >
+    {{ message.header }}
+  </p>
+  <p
+    *ngIf="message.body"
+    class="message-text"
+  >
+    {{ message.body }}
+  </p>
+  <img
+    *ngIf="message.icon"
+    [src]="message.icon.data"
+    class="message-icon"
+  >
+  <!-- <pre>{{ message | json }}</pre> -->
+</section>

@@ -1,0 +1,9 @@
+<ng-container *ngIf="service.categories && service.actions && service.icons; else Loading">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<ng-template #Loading>
+  <main class="w-screen h-screen z-10 flex justify-center items-center">
+    <mat-spinner></mat-spinner>
+  </main>
+</ng-template>

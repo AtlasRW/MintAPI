@@ -1,0 +1,87 @@
+<section class="sticky rounded-xl shadow-2xl z-50 top-0 bg-white px-8 pt-4 m-2 flex justify-evenly items-center">
+
+  <section class="pb-5 pr-8">
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="updateFilters({ isCurrent: null, isDraft: null })">TOUS</mat-button-toggle>
+      <mat-button-toggle (click)="updateFilters({ isCurrent: null, isDraft: true })">BROUILLONS</mat-button-toggle>
+      <mat-button-toggle (click)="updateFilters({ isCurrent: true, isDraft: false })">EN COURS</mat-button-toggle>
+    </mat-button-toggle-group>
+  </section>
+
+  <section class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Catégories</mat-label>
+      <mat-select [(ngModel)]="filterCategories" multiple>
+
+        <mat-select-trigger *ngIf="filterCategories.length > 0">
+          <span *ngFor="let filterCategory of filterCategories" class="bg-purple-200 rounded-xl p-2 m-1">
+            {{ filterCategory.title }}
+          </span>
+        </mat-select-trigger>
+
+        <mat-option *ngFor="let category of service.categories" [value]="category">{{ category.title }}</mat-option>
+
+        <section class="w-full flex justify-evenly items-center bg-purple-50 p-2">
+          <input
+            matInput required
+            class="h-10 w-11/12 text-center outline-none rounded-lg"
+            type="text" placeholder="NOUVELLE CATÉGORIE"
+            [(ngModel)]="newCategory.title"
+          >
+          <button
+            matSuffix mat-icon-button
+            [class]="newCategory.title ? 'bg-purple-500 text-white' : 'bg-gray-500'"
+            [disabled]="newCategory.title ? false : true"
+            (click)="onNewCategory()"
+          >
+            <mat-icon>done</mat-icon>
+          </button>
+        </section>
+
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <section class="pl-5 pb-5">
+    <section [class.spinning]="isRefreshSpinning">
+      <button mat-fab color="primary"
+        [disabled]="isRefreshSpinning"
+        (click)="filterMessages()"
+      >
+        <mat-icon class="spinner">refresh</mat-icon>
+      </button>
+    </section>
+  </section>
+
+  <section class="pl-5 pb-5">
+    <button mat-fab color="primary" routerLink="/new">
+      <mat-icon class="spinner">add</mat-icon>
+    </button>
+  </section>
+
+</section>
+
+<main
+  *ngIf="service.messages; else Loading"
+  class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-6 p-8"
+>
+  <section
+    *ngFor="let message of service.messages"
+    [routerLink]="'/' + message.id"
+    class="cursor-pointer p-3 rounded-2xl shadow-2xl"
+  >
+    <app-dashboard-message
+      [message]="message"
+      class="shadow-lg rounded-xl"
+    ></app-dashboard-message>
+    <p class="text-center truncate mt-2 mx-2" [title]="message.title">
+      {{ message.title }}
+    </p>
+  </section>
+</main>
+
+<ng-template #Loading>
+  <main class="w-screen h-screen z-10 flex justify-center items-center">
+    <mat-spinner></mat-spinner>
+  </main>
+</ng-template>
