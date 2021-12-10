@@ -72,10 +72,7 @@ export class MessageService {
   public async getAllIcons(): Promise<Icon[]> {
     return lastValueFrom(
       this.http.get<Icon[]>(`${environment.api}/icons`)
-        .pipe(map(icons => {
-          icons.forEach(icon => this.composeIcon(icon));
-          return icons;
-        }))
+        .pipe(map(icons => icons.map(icon => this.composeIcon(icon))))
     );
   }
 
